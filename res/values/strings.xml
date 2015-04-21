@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">EasyNews</string>
+
+    <!-- 主界面 -->
+    <string name="tabbar1">新闻</string>
+    <string name="tabbar2">图片</string>
+    <string name="tabbar3">视频</string>
+    <string name="tabbar4">我的</string>
+
+
 </resources>
