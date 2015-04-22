@@ -150,6 +150,7 @@ public class DummyFragment extends Fragment {
             }
         }
         mScroll.scrollTo(60*position,0);
+        mContentPager.setCurrentItem(position);
     }
 
     private void setTitleEnable(int position,boolean enabled){

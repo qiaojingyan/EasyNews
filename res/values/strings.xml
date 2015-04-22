@@ -8,5 +8,11 @@
     <string name="tabbar3">视频</string>
     <string name="tabbar4">我的</string>
 
+    <!-- 下拉刷新 -->
+    <string name="pull_to_refresh_pull_label">下拉刷新</string>
+    <string name="pull_to_refresh_release_label">释放立即刷新</string>
+    <string name="pull_to_refresh_refreshing_label">正在刷新</string>
+    <string name="pull_to_refresh_tap_label">点击刷新</string>
+
 
 </resources>

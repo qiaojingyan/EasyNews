@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:myView="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
-    <ListView
+              android:layout_height="match_parent"
+              android:gravity="center"
+        >
+
+    <com.qjy.easynews.biz.widget.PullToRefreshListView
             android:id="@+id/content_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            myView:headerTextColor="#777"
+            />
+
+
+
+
+    <LinearLayout
+            android:id="@+id/linearLayout_contentfragment_emptyinfo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center" >
+
+        <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+
 </LinearLayout>
