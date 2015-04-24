@@ -12,9 +12,9 @@ import java.util.List;
  */
 public class ContentAdapter extends FragmentPagerAdapter{
 
-    private List<ContentFragment> list;
+    private List<Fragment> list;
 
-    public ContentAdapter(FragmentManager fm,List<ContentFragment> list) {
+    public ContentAdapter(FragmentManager fm,List<Fragment> list) {
         super(fm);
         this.list = list;
     }

@@ -4,6 +4,7 @@ package com.qjy.easynews.biz.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.qjy.easynews.R;
 import com.qjy.easynews.biz.Adapter.ContentAdapter;
+import com.qjy.easynews.configuration.Constants;
 import com.qjy.easynews.model.News;
+import com.qjy.easynews.model.PicContent;
 import com.qjy.easynews.model.Title;
 import com.qjy.easynews.utils.HttpUtils;
 
@@ -26,11 +29,22 @@ import java.util.List;
  */
 public class DummyFragment extends Fragment {
 
+    //放Title
     private List<Title> mTitles;
+
+    //放Title的TextView
     private TextView[] mTitlesText;
+
+    //放Title的ScrollView
     private HorizontalScrollView mScroll;
+
+    //ScrollView中的LinearLayout
     private LinearLayout mTitleLayout;
+
+    //MainActivity传过来的决定内容的type
     private String mType;
+
+    //用来放具体内容的ViewPager
     private ViewPager mContentPager;
 
     @Override
@@ -39,33 +53,57 @@ public class DummyFragment extends Fragment {
 
         Bundle bundle = getArguments();
 
+        //获得 MainActivity 传过来的 type
         mType = bundle.getString("type");
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dummy,container,false);
+        //将 fragment 泵进去
+        View view = inflater.inflate(R.layout.fragment_dummy, container, false);
         initView(view);
         return view;
     }
 
-    public void initView(View view){
-        Log.e("DummyFragment", "lkamfamkfa");
+    public void initView(View view) {
+
+        //获得Title的布局,用于后面的添加标题
         mTitleLayout = (LinearLayout) view.findViewById(R.id.main_title);
+
+        //获得ScrollView的布局，用于后面滚动
         mScroll = (HorizontalScrollView) view.findViewById(R.id.main_scroll);
+
+        //ViewPager布局，用来放当前显示的内容Fragment
         mContentPager = (ViewPager) view.findViewById(R.id.fragment_pager);
+
+        // 初始化标题栏
         initTitle();
     }
 
+    /**
+     * 初始化标题栏
+     */
     public void initTitle() {
 
+        //根据 type 类型 从网络获取标题内容，显示出来
         HttpUtils.getTitles(getActivity(), mType, new HttpUtils.OnSuccessListener() {
+            /**
+             * 回调方法，返回来的是 Title 的 List
+             * @param list
+             */
             @Override
             public void loadUI(List<Title> list) {
+                // 将 Title 的 List 放给 mTitles
                 mTitles = list;
+
+                //将标题里面原有的东西删掉
                 mTitleLayout.removeAllViews();
+
+                //根据 List 初始化标题内容
                 initTitleText(list);
+
+                //初始化ViewPager
                 initViewPager();
             }
 
@@ -77,19 +115,49 @@ public class DummyFragment extends Fragment {
         });
     }
 
-    private void initViewPager(){
-        List<ContentFragment> totalList = new ArrayList<ContentFragment>();
+    /**
+     * 初始化Title的文字内容
+     *
+     * @param list
+     */
+    private void initTitleText(List<Title> list) {
+        //初始化 mTitlesText ,将TextView创建出来
+        mTitlesText = new TextView[list.size()];
 
-        for (int i = 0; i < mTitles.size(); i++) {
-            ContentFragment fragment = new ContentFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("cate_id",mTitles.get(i).getmCateId());
-            fragment.setArguments(bundle);
-            totalList.add(fragment);
+        for (int i = 0; i < list.size(); i++) {
+            TextView textView = new TextView(getActivity());
+            textView.setText(list.get(i).getmName());
+            textView.setTextSize(17);
+            textView.setPadding(15, 20, 15, 15);
+            addTitleListener(textView, i);
+            // 将 TextView 加进布局
+            mTitleLayout.addView(textView);
+            mTitlesText[i] = textView;
+
+        }
+        //初始化是默认选中第一个
+        selectTitle(0);
+    }
+
+    private void initViewPager() {
+
+        //根据不同的 type 选择不同的 Fragment
+        switch (mType) {
+            case Constants.NEWS:
+                initFragment(ContentFragment.class);
+                break;
+            case Constants.IMAGE:
+                initFragment(PicContentFragment.class);
+                break;
+            case Constants.VIDEO:
+                initFragment(VideoContentFragment.class);
+                break;
         }
 
-        ContentAdapter adapter = new ContentAdapter(getActivity().getSupportFragmentManager(),totalList);
-        mContentPager.setAdapter(adapter);
+
+        if (mContentPager == null) {
+            return;
+        }
 
         mContentPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -110,25 +178,33 @@ public class DummyFragment extends Fragment {
     }
 
     /**
-     * 初始化Title的文字内容
-     * @param list
+     * 初始化当前所对应的Fragment（创建不同的Fragment）
      */
-    private void initTitleText(List<Title> list){
-        mTitlesText = new TextView[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            TextView textView = new TextView(getActivity());
-            textView.setText(list.get(i).getmName());
-            textView.setTextSize(17);
-            textView.setPadding(15, 20, 15, 15);
-            addTitleListener(textView, i);
-            mTitleLayout.addView(textView);
-            mTitlesText[i] = textView;
+    private <T extends Fragment> void initFragment(Class<T> T) {
+
+        List<Fragment> totalList = new ArrayList<Fragment>();
+
+        for (int i = 0; i < mTitles.size(); i++) {
+            T fragment = null;
+            try {
+                fragment = T.newInstance();
+                Bundle bundle = new Bundle();
+                bundle.putString("cate_id", mTitles.get(i).getmCateId());
+                fragment.setArguments(bundle);
+                totalList.add(fragment);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }
-        selectTitle(0);
+
+        ContentAdapter adapter = new ContentAdapter(getChildFragmentManager(), totalList);
+
+        mContentPager.setAdapter(adapter);
     }
 
-    private void addTitleListener(TextView textView, final int position){
+
+    private void addTitleListener(TextView textView, final int position) {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,27 +215,26 @@ public class DummyFragment extends Fragment {
     }
 
 
-
-    private void selectTitle(int position){
+    private void selectTitle(int position) {
         for (int i = 0; i < mTitlesText.length; i++) {
-            if(i==position){
+            if (i == position) {
                 setTitleEnable(i, false);
 
-            }else{
-                setTitleEnable(i,true);
+            } else {
+                setTitleEnable(i, true);
             }
         }
-        mScroll.scrollTo(60*position,0);
+        mScroll.scrollTo(60 * position, 0);
         mContentPager.setCurrentItem(position);
     }
 
-    private void setTitleEnable(int position,boolean enabled){
-        setEnable(mTitlesText[position],enabled);
-        int color = enabled? Color.BLACK:Color.RED;
+    private void setTitleEnable(int position, boolean enabled) {
+        setEnable(mTitlesText[position], enabled);
+        int color = enabled ? Color.BLACK : Color.RED;
         mTitlesText[position].setTextColor(color);
-        if(enabled){
+        if (enabled) {
             mTitlesText[position].setBackgroundColor(Color.parseColor("#00000000"));
-        }else{
+        } else {
             mTitlesText[position].setBackgroundResource(R.drawable.textbg);
         }
     }

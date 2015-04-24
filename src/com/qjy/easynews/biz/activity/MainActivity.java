@@ -1,4 +1,4 @@
-package com.qjy.easynews.biz;
+package com.qjy.easynews.biz.activity;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -104,7 +104,6 @@ public class MainActivity extends FragmentActivity {
 
     public void loadTabData(int position){
         DummyFragment fragment = new DummyFragment();
-
 
         String type = Constants.NEWS;
 

@@ -1,9 +1,11 @@
 package com.qjy.easynews.biz.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import com.qjy.easynews.R;
 import com.qjy.easynews.app.AppCtx;
 import com.qjy.easynews.biz.Adapter.CyclePagerAdapter;
 import com.qjy.easynews.biz.Adapter.NewsItemsAdapter;
+import com.qjy.easynews.biz.activity.NewsDetailActivity;
 import com.qjy.easynews.biz.widget.PullToRefreshBase;
 import com.qjy.easynews.biz.widget.PullToRefreshListView;
 import com.qjy.easynews.model.News;
@@ -105,7 +108,7 @@ public class ContentFragment extends Fragment {
     private void initData() {
 
         mRequestQueue = AppCtx.getInstance().getRequestQueue();
-        totalList = new ArrayList<News>();
+        totalList = new ArrayList<>();
         adapter = new NewsItemsAdapter(totalList, getActivity());
         mListView = mRefreshListView.getRefreshableView();
         mListView.addHeaderView(topView);
@@ -153,6 +156,30 @@ public class ContentFragment extends Fragment {
             @Override
             public void onPageScrollStateChanged(int i) {
 
+            }
+        });
+
+        //给ListView的Item加监听器
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                position = position-mListView.getHeaderViewsCount();
+
+                //获得News 的 Id
+                String news_id = totalList.get(position).getId()+"";
+
+                //Activity 跳转
+                Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+
+                //诶Activity 传值
+                Bundle bundle = new Bundle();
+                bundle.putString("news_id",news_id);
+                intent.putExtras(bundle);
+
+                //启动Activity
+                startActivity(intent);
             }
         });
 

@@ -1,5 +1,7 @@
 package com.qjy.easynews.model;
 
+import java.util.List;
+
 /**
  * Created by qjy on 15-4-21.
  */
@@ -10,6 +12,7 @@ public class News {
     private String create_time;
     private String cover_pic;
     private String descript;
+    private List<String> pic_list;
     private int comment_total;
 
     public int getId() {
@@ -66,6 +69,15 @@ public class News {
 
     public void setComment_total(int comment_total) {
         this.comment_total = comment_total;
+    }
+
+
+    public List<String> getPic_list() {
+        return pic_list;
+    }
+
+    public void setPic_list(List<String> pic_list) {
+        this.pic_list = pic_list;
     }
 
     @Override

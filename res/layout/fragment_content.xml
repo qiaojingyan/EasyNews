@@ -12,6 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             myView:headerTextColor="#777"
+            android:listSelector="#0000"
             />
 
 
@@ -26,6 +27,20 @@
         <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/linearLayout_contentfragment_emptyinfo2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center" >
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:textColor="#777"
+                android:text="正在建设中..."/>
     </LinearLayout>
 
 
