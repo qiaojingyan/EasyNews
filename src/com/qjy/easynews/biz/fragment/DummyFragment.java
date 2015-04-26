@@ -4,6 +4,7 @@ package com.qjy.easynews.biz.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -46,10 +47,13 @@ public class DummyFragment extends Fragment {
 
     //用来放具体内容的ViewPager
     private ViewPager mContentPager;
+    private FragmentActivity context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        context = getActivity();
 
         Bundle bundle = getArguments();
 
@@ -87,7 +91,8 @@ public class DummyFragment extends Fragment {
     public void initTitle() {
 
         //根据 type 类型 从网络获取标题内容，显示出来
-        HttpUtils.getTitles(getActivity(), mType, new HttpUtils.OnSuccessListener() {
+
+        HttpUtils.getTitles(context, mType, new HttpUtils.OnSuccessListener() {
             /**
              * 回调方法，返回来的是 Title 的 List
              * @param list
@@ -125,7 +130,7 @@ public class DummyFragment extends Fragment {
         mTitlesText = new TextView[list.size()];
 
         for (int i = 0; i < list.size(); i++) {
-            TextView textView = new TextView(getActivity());
+            TextView textView = new TextView(context);
             textView.setText(list.get(i).getmName());
             textView.setTextSize(17);
             textView.setPadding(15, 20, 15, 15);

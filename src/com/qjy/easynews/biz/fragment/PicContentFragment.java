@@ -4,6 +4,7 @@ package com.qjy.easynews.biz.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,12 +34,14 @@ public class PicContentFragment extends Fragment {
     private PullToRefreshListView mContentListView;
     private ListView mListView;
     private boolean isLoading;
+    private FragmentActivity context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         mCateId = bundle.getString("cate_id");
+        context = getActivity();
     }
 
     @Override
@@ -67,7 +70,8 @@ public class PicContentFragment extends Fragment {
 
         //设置ListView的Adapter
         mTotalList = new ArrayList<>();
-        adapter = new PicContentAdapter(mTotalList,getActivity());
+
+        adapter = new PicContentAdapter(mTotalList, context);
         mListView.setAdapter(adapter);
 
     }
@@ -97,7 +101,7 @@ public class PicContentFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), PicDetailActivity.class);
+                Intent intent = new Intent(context, PicDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("item_id",mTotalList.get(position).getId()+"");
                 intent.putExtras(bundle);
@@ -113,7 +117,7 @@ public class PicContentFragment extends Fragment {
     }
 
     private void loadData(){
-        HttpUtils.getPicContent(getActivity(), mCateId, mCurrentPage, new HttpUtils.OnPicSuccessListener() {
+        HttpUtils.getPicContent(context, mCateId, mCurrentPage, new HttpUtils.OnPicSuccessListener() {
             @Override
             public void loadPicUI(List<PicContent> list) {
                 if(list != null){

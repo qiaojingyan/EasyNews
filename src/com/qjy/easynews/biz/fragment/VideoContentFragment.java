@@ -2,16 +2,20 @@ package com.qjy.easynews.biz.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.qjy.easynews.R;
 import com.qjy.easynews.biz.Adapter.VideoAdapter;
+import com.qjy.easynews.biz.activity.VideoDetailActivity;
 import com.qjy.easynews.biz.widget.PullToRefreshBase;
 import com.qjy.easynews.biz.widget.PullToRefreshListView;
 import com.qjy.easynews.model.Video;
@@ -92,6 +96,22 @@ public class VideoContentFragment extends Fragment {
                     currentPage++;
                     loadData();
                 }
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(context, VideoDetailActivity.class);
+
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("video_url",totalList.get(position).getVideo_url());
+                intent.putExtras(bundle);
+
+                startActivity(intent);
+
             }
         });
     }

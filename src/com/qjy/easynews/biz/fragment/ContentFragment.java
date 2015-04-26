@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,12 +63,14 @@ public class ContentFragment extends Fragment {
             }
         }
     };
+    private FragmentActivity content;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        content = getActivity();
         Bundle bundle = getArguments();
         mCateId = bundle.getString("cate_id");
     }
@@ -99,7 +102,7 @@ public class ContentFragment extends Fragment {
         mRefreshListView.setEmptyView(mLinearEmpty);
 
         //用来做头listView的Head
-        topView = getActivity().getLayoutInflater().inflate(R.layout.page_newstop,null);
+        topView = content.getLayoutInflater().inflate(R.layout.page_newstop,null);
         mTopViewPager = (ViewPager) topView.findViewById(R.id.viewPager_newstop);
         mTopTextView = (TextView) topView.findViewById(R.id.textView_newstop);
         mDotsLinearLayout = (LinearLayout) topView.findViewById(R.id.linearLayout_newstop_dots);
@@ -109,7 +112,7 @@ public class ContentFragment extends Fragment {
 
         mRequestQueue = AppCtx.getInstance().getRequestQueue();
         totalList = new ArrayList<>();
-        adapter = new NewsItemsAdapter(totalList, getActivity());
+        adapter = new NewsItemsAdapter(totalList, content);
         mListView = mRefreshListView.getRefreshableView();
         mListView.addHeaderView(topView);
         mListView.setAdapter(adapter);
@@ -133,7 +136,7 @@ public class ContentFragment extends Fragment {
             public void onLastItemVisible() {
                 mCurrentPage++;
                 if(!isLoading) {
-                    Toast.makeText(getActivity(), "正在加载", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(content, "正在加载", Toast.LENGTH_SHORT).show();
                     isLoading = true;
                     loadData();
                 }
@@ -171,7 +174,7 @@ public class ContentFragment extends Fragment {
                 String news_id = totalList.get(position).getId()+"";
 
                 //Activity 跳转
-                Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+                Intent intent = new Intent(content, NewsDetailActivity.class);
 
                 //诶Activity 传值
                 Bundle bundle = new Bundle();
@@ -187,7 +190,7 @@ public class ContentFragment extends Fragment {
     }
 
     private void loadData() {
-        HttpUtils.getNews(getActivity(), mCateId, mCurrentPage, new HttpUtils.OnSuccessListener() {
+        HttpUtils.getNews(content, mCateId, mCurrentPage, new HttpUtils.OnSuccessListener() {
             @Override
             public void loadUI(List<Title> list) {
             }
@@ -219,12 +222,12 @@ public class ContentFragment extends Fragment {
 
         for (int i = 0; i < topList.size(); i++) {
             News news = topList.get(i);
-            NetworkImageView imageView = new NetworkImageView(getActivity());
+            NetworkImageView imageView = new NetworkImageView(content);
             ImageLoader imageLoader = new ImageLoader(mRequestQueue, BitmapCache.getInstance());
             imageView.setImageUrl(news.getCover_pic(), imageLoader);
             imgList.add(imageView);
 
-            dots[i] = new ImageView(getActivity());
+            dots[i] = new ImageView(content);
             dots[i].setImageResource(R.drawable.dots);
             mDotsLinearLayout.addView(dots[i]);
         }

@@ -3,18 +3,13 @@ package com.qjy.easynews.utils;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.qjy.easynews.app.AppCtx;
 import com.qjy.easynews.configuration.Constants;
 import com.qjy.easynews.model.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by qjy on 15-4-21.
@@ -215,6 +210,40 @@ public class HttpUtils {
                 Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
             }
         });
+        mRequestQueue.add(request);
+    }
+
+    public static void register(final User user){
+        Log.e("register","user : "+user);
+        StringRequest request = new StringRequest(StringRequest.Method.GET, Constants.getRegisterURL(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("HttpUtils","response : "+response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Log.e("HttpUtils" ,"jasndjadlasknda");
+
+                Map<String,String> map = new HashMap<>();
+                map.put("username",user.getUsername());
+                map.put("password",user.getPassword());
+                map.put("sequence",user.getSequence());
+                map.put("verify_code",user.getVerify_code());
+//                map.put("nickname",user.getNickname());
+//                map.put("sex",user.getSex());
+                map.put("format","json");
+
+                return map;
+            }
+        };
+
         mRequestQueue.add(request);
     }
 

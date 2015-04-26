@@ -7,7 +7,7 @@
 
     <uses-sdk android:minSdkVersion="8"/>
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
             android:label="@string/app_name"
@@ -18,15 +18,34 @@
         <activity
                 android:name=".biz.activity.MainActivity"
                 android:label="@string/app_name"
+                android:screenOrientation="portrait"
                 >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".biz.activity.NewsDetailActivity"
-                android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".biz.activity.CommentsActivity"/>
-        <activity android:name=".biz.activity.PicDetailActivity"/>
+        <activity
+                android:name=".biz.activity.NewsDetailActivity"
+                android:windowSoftInputMode="stateHidden"
+                android:screenOrientation="portrait"
+                />
+        <activity
+                android:name=".biz.activity.CommentsActivity"
+                android:screenOrientation="portrait"
+                />
+        <activity
+                android:name=".biz.activity.PicDetailActivity"
+                android:screenOrientation="portrait"
+                />
+        <activity
+                android:name=".biz.activity.VideoDetailActivity"
+                android:screenOrientation="landscape"
+                />
+        <activity android:name=".biz.activity.LoginActivity"/>
+        <activity android:name=".biz.activity.ChooseActivity"/>
+        <activity android:name=".biz.activity.ChoosedActivity"/>
+        <activity android:name=".biz.activity.RegisterActivity"/>
+        <activity android:name=".biz.activity.ConsummateActivity"/>
     </application>
 </manifest>

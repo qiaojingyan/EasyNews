@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+        >
+
+
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            >
+
+        <Button
+                android:id="@+id/btn_picdetail_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/backbtn"
+                android:onClick="clickButton"
+                android:layout_centerVertical="true"
+                />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="上传图片"
+                />
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="发送"
+                android:background="@drawable/logoffbtn"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:textColor="#777"
+                android:layout_alignParentRight="true"
+                />
+    </RelativeLayout>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#eee"
+            />
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            >
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:orientation="vertical"
+                    >
+                <Spinner
+                        android:id="@+id/spinner_uploadpic_cate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+
+                </Spinner>
+
+                <EditText
+                        android:layout_marginTop="15dp"
+                        android:id="@+id/spinner_uploadpic_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="标题"
+                        />
+
+                <EditText
+                        android:layout_marginTop="15dp"
+                        android:id="@+id/spinner_uploadpic_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="说说你身边的热闻..."
+                        android:lines="6"
+                        />
+            </LinearLayout>
+
+            <GridView
+                    android:id="@+id/gridView_uploadpic_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:listSelector="#0000"
+                    android:padding="15dp"
+                    android:numColumns="3"
+                    >
+
+            </GridView>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+
+</LinearLayout>

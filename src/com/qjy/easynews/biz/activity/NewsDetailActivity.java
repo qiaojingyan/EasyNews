@@ -62,7 +62,7 @@ public class NewsDetailActivity extends Activity {
 
 
         mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setTitle("正在加载中");
+        mProgressDialog.setMessage("正在加载中");
         mProgressDialog.setCanceledOnTouchOutside(false);
 
         initData();

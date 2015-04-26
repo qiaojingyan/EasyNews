@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.qjy.easynews.R;
 import com.qjy.easynews.biz.fragment.DummyFragment;
+import com.qjy.easynews.biz.fragment.SettingsFragment;
 import com.qjy.easynews.configuration.Constants;
 import com.qjy.easynews.model.Title;
 import com.qjy.easynews.utils.DecimUtils;
@@ -92,7 +93,19 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void selectTabBar(int position){
-        loadTabData(position);
+
+        if(position == 3){
+            SettingsFragment fragment = new SettingsFragment();
+            FragmentTransaction transaction = manager.beginTransaction();
+
+            transaction.replace(R.id.main_content,fragment);
+            transaction.commit();
+
+        }else{
+            loadTabData(position);
+        }
+
+
         for (int i = 0; i < mTabBars.length; i++) {
             if(i==position){
                 setTabBarEnable(i,false);
@@ -114,6 +127,7 @@ public class MainActivity extends FragmentActivity {
             case 2:
                 type = Constants.VIDEO;
                 break;
+
         }
 
 

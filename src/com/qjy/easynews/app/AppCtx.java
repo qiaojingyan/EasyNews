@@ -11,6 +11,7 @@ public class AppCtx extends Application{
 
     private static AppCtx mAppCtx;
     private RequestQueue mRequestQueue;
+    private boolean mIsLogin;
 
 
     @Override
@@ -31,11 +32,21 @@ public class AppCtx extends Application{
         return mRequestQueue;
     }
 
+    public boolean isLogin(){
+        return mIsLogin;
+    }
+
+    public void setIsLogin(boolean flag){
+        mIsLogin = flag;
+    }
+
     private void firstCreateInstance(){
         if(mAppCtx == null){
             mAppCtx = this;
         }
         getRequestQueue();
     }
+
+
 
 }

@@ -31,21 +31,13 @@ public class CyclePagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         position = position % list.size();
-        if (position < 0) {
-            position = position + list.size();
-        }
-        View view = list.get(position);
-        ViewParent vp = view.getParent();
-        if (vp != null) {
-            ViewGroup vg = (ViewGroup) vp;
-            vg.removeView(view);
-        }
         container.addView(list.get(position));
         return list.get(position);
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-
+        position = position%list.size();
+        container.removeView(list.get(position));
     }
 }
